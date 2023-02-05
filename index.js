@@ -32,9 +32,21 @@ client.on('messageCreate', message => {
         role = message.guild.roles.cache.find(role => role.name === "horny jail");
         target = message.mentions.members.first();
         target.roles.remove(role);
-        message.channel.send(`${target}` + " has been set free from horny jail");
-    }
-
+        message.channel.send({
+            "embeds": [
+                {
+                  "type": "rich",
+                  "title": `Horny Jail`,
+                  "description": `${target}` + " has been set free from horny jail",
+                  "color": 0x00FFFF,
+                  "image":{
+                    "url": "https://i.ytimg.com/vi/aSzyI93e_zY/maxresdefault.jpg"
+                  }
+                }
+                ]
+            }
+        )
+        }
 
     if(message.content[0] === '!'){
     text = message.content.toLowerCase().split(" ");
@@ -61,10 +73,21 @@ client.on('messageCreate', message => {
             role = message.guild.roles.cache.find(role => role.name === "horny jail");
             target.roles.add(role);
 
-            message.channel.send(`${target}` + " has been sent to horny jail");
-
+            message.channel.send({"embeds": [
+                {
+                  "type": "rich",
+                  "title": `Horny Jail`,
+                  "description": `${target}` + " has been sent to horny jail",
+                  "color": 0x00FFFF,
+                  "image": {
+                    "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
+                  }
+                }
+                
+                ]
+            }
+            );
             setTimeout(() => shadowRealm(), time);
-
             break;
         case "!setfree":
             shadowRealm();
