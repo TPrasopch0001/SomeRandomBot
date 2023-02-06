@@ -13,11 +13,11 @@ const client = new Client({
 	],
 });
 
-var cmdList = [
+const cmdList = [
     {name:'help', desc:'sends you to this page'},
     {name:'ping', desc:'pong!'},
-    {name:'hornyjail', desc:'send someone to horny jail for a variable amount of minutes'},
-    {name:'setfree' , desc:'free someone from horny jail' },
+    {name:'hornyjail', desc:' [mention] {duration in minutes} someone to horny jail for a variable amount of minutes'},
+    {name:'setfree' , desc:' [mention] free someone from horny jail' },
     {name:'invite' , desc:'sends you the link to invite me to other servers'}
 ]
 
@@ -28,8 +28,9 @@ client.on('ready', () => {
 client.on('messageCreate', message => {
     let role;
     let target = message.mentions.members.first();
+    text = message.content.toLowerCase().split(" ");
     function shadowRealm(){
-        role = message.guild.roles.cache.find(role => role.name === "horny jail");
+        role = message.guild.roles.cache.find(role => role.name === "Horny-Jail ;}");
         target = message.mentions.members.first();
         target.roles.remove(role);
         message.channel.send({
@@ -48,8 +49,8 @@ client.on('messageCreate', message => {
         )
         }
 
+    //commands
     if(message.content[0] === '!'){
-    text = message.content.toLowerCase().split(" ");
     console.log(text);
     switch(text[0]){
         case "!ping":
@@ -60,7 +61,7 @@ client.on('messageCreate', message => {
             message.channel.send("https://media.tenor.com/qTwpBu_N5SgAAAAC/quagsire-quagy-quagsire.gif");
             break;
         case "!hornyjail":
-            var time;
+            var time = 30000;
 
             try{
                 time = parseInt(text[2])*60000;
@@ -69,10 +70,8 @@ client.on('messageCreate', message => {
                 console.log("error with time");
                 time = 30000;
             }
-
-            role = message.guild.roles.cache.find(role => role.name === "horny jail");
+            role = message.guild.roles.cache.find(role => role.name === "Horny-Jail ;}");
             target.roles.add(role);
-
             message.channel.send({"embeds": [
                 {
                   "type": "rich",
