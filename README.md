@@ -21,6 +21,7 @@ Brings up the help menu
 ### hornyjail [mention] {duration in seconds}
 
 Send someone to horny jail (must have a horny jail role, modify the constant "roleName" to fit your role)
+There also exists a list of blacklisted words you can add if you want to send someone to horny jail for saying something
 
 ### setfree [mention]
 
@@ -29,3 +30,7 @@ Frees someone from horny jail
 ### 8ball [question]
 
 Ask a question, get a magic 8 ball answer
+
+### cry
+
+Does a Quagsire cry and gif

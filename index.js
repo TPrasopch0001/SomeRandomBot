@@ -1,9 +1,11 @@
 require('dotenv').config(); //initialize dotenv
 const Discord = require('discord.js'); //import discord.js
 
+const talkedRecently = new Set();
+
 const roleName = "Horny-Jail ;}";
 
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 
 const BlackListedWords = [
   'sex',
@@ -50,17 +52,23 @@ const cmdList = [
     {name:'ping', desc:'pong!'},
     {name:'hornyjail', desc:' [mention] {duration in seconds} someone to horny jail for a variable amount of minutes'},
     {name:'setfree' , desc:' [mention] free someone from horny jail' },
-    {name:'invite' , desc:'sends you the link to invite me to other servers'}
+    {name:'invite' , desc:'sends you the link to invite me to other servers'},
+    {name: '8ball', desc: 'ask a question, get a magic 8 ball answer'},
+    {name: 'cry', desc: ' pokemon cry'},
 ]
+
+//to round to n decimal places
+function round(num, places) {
+  var multiplier = Math.pow(10, places);
+  return Math.round(num * multiplier) / multiplier;
+}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setPresence({activities:[{
-    "type":4,
-    "name": "Just Vibing"
-  }],
-    "status" : 'online',
-  })
+  client.user.setPresence({
+    activities: [{ name: `with your mom`, type: ActivityType.Playing}],
+    status: `online`
+  });
 });
 
 client.on('messageCreate', message => {
@@ -68,19 +76,23 @@ client.on('messageCreate', message => {
     let target = message.mentions.members.first();
     text = message.content.toLowerCase().split(" ");
     function sentToShadowRealm(t){
-      var time = 30000; //5 minutes
+      var time = 30000; //30 seconds
             try{
+              if(Boolean(t)){
                 time = parseInt(t)*1000; // x seconds
+              }
             }
             catch (error) {
                 console.log("error with time");
             }
+            if(!target.roles.cache.find( r => r.name === roleName)){
             target.roles.add(role);
-            message.channel.send({"embeds": [
+            if(time > 60000){
+              message.channel.send({"embeds": [
                 {
                   "type": "rich",
                   "title": `Horny Jail`,
-                  "description": `${target}` + " has been sent to horny jail",
+                  "description": `${target}` + " has been sent to horny jail for "+`${round(time/60000,2)}` +" minutes",
                   "color": 0x00FFFF,
                   "image": {
                     "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
@@ -89,9 +101,28 @@ client.on('messageCreate', message => {
                 ]
             }
             );
+            } else{
+              message.channel.send({"embeds": [
+                {
+                  "type": "rich",
+                  "title": `Horny Jail`,
+                  "description": `${target}` + " has been sent to horny jail for "+`${time/1000}` +" seconds",
+                  "color": 0x00FFFF,
+                  "image": {
+                    "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
+                  }
+                }
+                ]
+            }
+            );
+            }
             setTimeout(() => freeFromShadowRealm(), time);
+    } else{
+      message.channel.send(`${target}` + " is already in horny jail");
     }
+  }
     function freeFromShadowRealm(){
+      if(target.roles.cache.find( r => r.name === roleName)){
         target.roles.remove(role);
         message.channel.send({
             "embeds": [
@@ -108,9 +139,10 @@ client.on('messageCreate', message => {
             }
         )
         }
+      }
 
     //commands
-    if(message.content[0] === '!'){
+    if(message.content.startsWith("!")){
       console.log(text);
     switch(text[0]){
         case "!ping":
@@ -121,8 +153,15 @@ client.on('messageCreate', message => {
             message.channel.send("https://media.tenor.com/qTwpBu_N5SgAAAAC/quagsire-quagy-quagsire.gif");
             break;
         case "!hornyjail":
+          if(talkedRecently.has(message.author.id)){
+            message.channel.send("You have recently used hornyjail, please wait 2 minutes before using it again.");
+          }
+          else{
+            talkedRecently.add(message.author.id);
             sentToShadowRealm(text[2]);
-            break;
+            setTimeout(()=> talkedRecently.delete(message.author.id),120000);
+          }
+          break;
         case "!setfree":
             freeFromShadowRealm();
             break;
@@ -150,22 +189,33 @@ client.on('messageCreate', message => {
           question = text.slice(1).join(' ');
           ans = Math.floor(Math.random() * ballAns.length);
           message.channel.send({
+            "content": `Magic 8 Ball`,
             "embeds": [
               {
                 "type": "rich",
-                "title": `Magic 8 Ball`,
-                "description": "'"+`${question}`+"' "+`${ballAns[ans]}`,
+                "title": `${question}`,
+                "description": `${ballAns[ans]}`,
                 "color": 0x00FFFF,
+                "thumbnail": {
+                  "url": `https://www.horoscope.com/images-US/games/game-magic-8-ball-no-text.png`,
+                  "height": 0,
+                  "width": 0
+                }
               }
             ]
           })
     }
 }
+var bonkTime = 0;
   for(let i = 0; i < BlackListedWords.length;i++){
     if(text.includes(BlackListedWords[i])){
-      target = message.member;
-      sentToShadowRealm(5);
+      bonkTime+=10;
+      
     }
+  }
+  if(bonkTime > 0){
+    target = message.member;
+    sentToShadowRealm(bonkTime);
   }
   });
 
