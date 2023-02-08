@@ -63,84 +63,109 @@ function round(num, places) {
   return Math.round(num * multiplier) / multiplier;
 }
 
+function findindex(str) {
+  strArray = str.split(' ');
+    for(let i=0;i<strArray.length;i++){
+        if(isNaN(strArray[i])==false && strArray[i] !== ''){
+            return i;
+        }
+    }
+  }
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setPresence({
     activities: [{ name: `you use !help`, type: ActivityType.Watching}],
     status: `online`
   });
+  // console.log(client.user);
 });
 
 client.on('messageCreate', message => {
     let role = message.guild.roles.cache.find(role => role.name === roleName);
+    //console.log("message sent from: " + message.channel.id);
     text = message.content.toLowerCase().split(" ");
+    let msgchannel = message.guild.channels.cache.find(c => c.name === "bot-commands-time");
+    //console.log("message sent to: " + msgchannel);
     function sentToShadowRealm(t){
-      let target = message.mentions.members.first();
-      var time = 30000; //30 seconds
-            try{
-              if(Boolean(t)){
-                time = parseInt(t)*1000; // x seconds
+      let targets = Array.from(message.mentions.members);
+      for(let i = 0; i < targets.length;i++){
+        let target = targets[i][1];
+        if(target.id !== client.user.id){
+          var time = 30000; //30 seconds
+          try{
+            if(Boolean(t)){
+              time = parseInt(t)*1000; // x seconds
+            }
+          }
+          catch (error) {
+              console.log("error with time");
+          }
+          if(!target.roles.cache.find( r => r.name === roleName)){
+          target.roles.add(role);
+          if(time > 60000){
+            msgchannel.send(
+              {"embeds": [
+              {
+                "type": "rich",
+                "title": `Horny Jail`,
+                "description": `${target}` + " has been sent to horny jail for "+`${round(time/60000,2)}` +" minutes",
+                "color": 0x00FFFF,
+                "image": {
+                  "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
+                }
               }
-            }
-            catch (error) {
-                console.log("error with time");
-            }
-            if(!target.roles.cache.find( r => r.name === roleName)){
-            target.roles.add(role);
-            if(time > 60000){
-              message.channel.send({"embeds": [
-                {
-                  "type": "rich",
-                  "title": `Horny Jail`,
-                  "description": `${target}` + " has been sent to horny jail for "+`${round(time/60000,2)}` +" minutes",
-                  "color": 0x00FFFF,
-                  "image": {
-                    "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
-                  }
+              ]
+          }
+          );
+          } else{
+            msgchannel.send({"embeds": [
+              {
+                "type": "rich",
+                "title": `Horny Jail`,
+                "description": `${target}` + " has been sent to horny jail for "+`${time/1000}` +" seconds",
+                "color": 0x00FFFF,
+                "image": {
+                  "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
                 }
-                ]
-            }
-            );
-            } else{
-              message.channel.send({"embeds": [
-                {
-                  "type": "rich",
-                  "title": `Horny Jail`,
-                  "description": `${target}` + " has been sent to horny jail for "+`${time/1000}` +" seconds",
-                  "color": 0x00FFFF,
-                  "image": {
-                    "url":"https://i.kym-cdn.com/entries/icons/mobile/000/033/758/Screen_Shot_2020-04-28_at_12.21.48_PM.jpg"
-                  }
-                }
-                ]
-            }
-            );
-            }
-            setTimeout(() => freeFromShadowRealm(), time);
-    } else{
-      message.channel.send(`${target}` + " is already in horny jail");
-    }
+              }
+              ]
+          }
+          );
+          }
+          setTimeout(() => freeFromShadowRealm(target), time);
+  } else{
+    msgchannel.send(`${target}` + " is already in horny jail");
   }
-    function freeFromShadowRealm(){
-      let target = message.mentions.members.first();
-      if(target.roles.cache.find( r => r.name === roleName)){
-        target.roles.remove(role);
-        message.channel.send({
-            "embeds": [
-                {
-                  "type": "rich",
-                  "title": `Horny Jail`,
-                  "description": `${target}` + " has been set free from horny jail",
-                  "color": 0x00FFFF,
-                  "image":{
-                    "url": "https://i.ytimg.com/vi/aSzyI93e_zY/maxresdefault.jpg"
-                  }
-                }
-                ]
-            }
-        )
+        } else{
+          msgchannel.send("I cannot be sent to horny jail");
         }
       }
+      
+      
+  }
+    function freeFromShadowRealm(target){
+        if(target.roles.cache.find( r => r.name === roleName)){
+          target.roles.remove(role);
+          msgchannel.send({
+              "embeds": [
+                  {
+                    "type": "rich",
+                    "title": `Horny Jail`,
+                    "description": `${target}` + " has been set free from horny jail",
+                    "color": 0x00FFFF,
+                    "image":{
+                      "url": "https://i.ytimg.com/vi/aSzyI93e_zY/maxresdefault.jpg"
+                    }
+                  }
+                  ]
+              }
+          )
+          }
+          else{
+            msgchannel.send(`${target}` + " isn't in horny jail");
+          }
+        }
 
     //commands
     if(message.content.startsWith("!")){
@@ -150,16 +175,28 @@ client.on('messageCreate', message => {
             message.reply("pong");
             break;
         case "!cry":
-            message.reply("QUAAAAAAG");
-            message.channel.send("https://media.tenor.com/qTwpBu_N5SgAAAAC/quagsire-quagy-quagsire.gif");
+            message.reply({
+              "embeds": [
+                  {
+                    "type": "rich",
+                    "title": "QUAAAAAAG",
+                    "color": 0x00FFFF,
+                    "image": {
+                      "url": "https://media.tenor.com/qTwpBu_N5SgAAAAC/quagsire-quagy-quagsire.gif",
+                      "height": 0,
+                      "width": 0
+                    },
+                  }
+                ]
+              });
             break;
         case "!hornyjail":
           if(talkedRecently.has(message.author.id)){
-            message.channel.send("You have recently used hornyjail, please wait a minute before using it again.");
+            msgchannel.send("You have recently used hornyjail, please wait a minute before using it again.");
           }
           else{
             talkedRecently.add(message.author.id);
-            sentToShadowRealm(text[2]);
+            sentToShadowRealm(text[findindex(message.content.toLowerCase())]);
             setTimeout(()=> talkedRecently.delete(message.author.id),60000);
           }
           break;
@@ -167,10 +204,10 @@ client.on('messageCreate', message => {
             freeFromShadowRealm();
             break;
         case "!help":
-            message.channel.send(helpList());
+            msgchannel.send(helpList());
             break;
         case "!invite":
-            message.channel.send({
+            msgchannel.send({
                 "embeds": [
                     {
                       "type": "rich",
@@ -189,7 +226,7 @@ client.on('messageCreate', message => {
         case "!8ball":
           question = text.slice(1).join(' ');
           ans = Math.floor(Math.random() * ballAns.length);
-          message.channel.send({
+          msgchannel.send({
             "content": `Magic 8 Ball`,
             "embeds": [
               {
