@@ -66,16 +66,16 @@ function round(num, places) {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setPresence({
-    activities: [{ name: `with your mom`, type: ActivityType.Playing}],
+    activities: [{ name: `you use !help`, type: ActivityType.Watching}],
     status: `online`
   });
 });
 
 client.on('messageCreate', message => {
     let role = message.guild.roles.cache.find(role => role.name === roleName);
-    let target = message.mentions.members.first();
     text = message.content.toLowerCase().split(" ");
     function sentToShadowRealm(t){
+      let target = message.mentions.members.first();
       var time = 30000; //30 seconds
             try{
               if(Boolean(t)){
@@ -122,6 +122,7 @@ client.on('messageCreate', message => {
     }
   }
     function freeFromShadowRealm(){
+      let target = message.mentions.members.first();
       if(target.roles.cache.find( r => r.name === roleName)){
         target.roles.remove(role);
         message.channel.send({
@@ -154,12 +155,12 @@ client.on('messageCreate', message => {
             break;
         case "!hornyjail":
           if(talkedRecently.has(message.author.id)){
-            message.channel.send("You have recently used hornyjail, please wait 2 minutes before using it again.");
+            message.channel.send("You have recently used hornyjail, please wait a minute before using it again.");
           }
           else{
             talkedRecently.add(message.author.id);
             sentToShadowRealm(text[2]);
-            setTimeout(()=> talkedRecently.delete(message.author.id),120000);
+            setTimeout(()=> talkedRecently.delete(message.author.id),60000);
           }
           break;
         case "!setfree":
