@@ -201,7 +201,7 @@ client.on('messageCreate', message => {
           }
           break;
         case "!setfree":
-            freeFromShadowRealm();
+          freeFromShadowRealm(message.mentions.members.first());
             break;
         case "!help":
             msgchannel.send(helpList());
