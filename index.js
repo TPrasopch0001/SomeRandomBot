@@ -192,12 +192,12 @@ client.on('messageCreate', message => {
             break;
         case "!hornyjail":
           if(talkedRecently.has(message.author.id)){
-            msgchannel.send("You have recently used hornyjail, please wait a minute before using it again.");
+            msgchannel.send("You have recently used hornyjail, please wait half an hour before using it again.");
           }
           else{
             talkedRecently.add(message.author.id);
             sentToShadowRealm(text[findindex(message.content.toLowerCase())]);
-            setTimeout(()=> talkedRecently.delete(message.author.id),60000);
+            setTimeout(()=> talkedRecently.delete(message.author.id),300000);
           }
           break;
         case "!setfree":
