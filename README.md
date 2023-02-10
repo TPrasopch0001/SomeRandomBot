@@ -18,19 +18,33 @@ pong!
 
 Brings up the help menu
 
-### hornyjail [mention] {duration in seconds}
+### hornyjail [mention] {duration} {units of duration}
 
 Send someone to horny jail (must have a horny jail role, modify the constant "roleName" to fit your role)
 There also exists a list of blacklisted words you can add if you want to send someone to horny jail for saying something
 
-### setfree [mention]
+### setfree [who] {user}
 
-Frees someone from horny jail
+Choose to set everyone free or a specific user
 
-### 8ball [question]
+### 8ball
 
 Ask a question, get a magic 8 ball answer
 
 ### cry
 
 Does a Quagsire cry and gif
+
+### food
+
+#### add
+
+Adds a restaurant/place to eat in potential places
+
+#### list
+
+Lists all the places to eat saved in bot
+
+#### choose
+
+Chooses a place to eat

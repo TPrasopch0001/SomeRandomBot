@@ -2,12 +2,14 @@ const {SlashCommandBuilder} = require('discord.js');
 
 const cmdList = [
     {name:'help', desc:'sends you to this page'},
-    {name:'ping', desc:'pong!'},
-    {name:'hornyjail', desc:' [mention] {duration in seconds} someone to horny jail for a variable amount of minutes'},
-    {name:'setfree' , desc:' [mention] free someone from horny jail' },
-    {name:'invite' , desc:'sends you the link to invite me to other servers'},
-    {name: '8ball', desc: 'ask a question, get a magic 8 ball answer'},
-    {name: 'cry', desc: ' pokemon cry'},
+    {name:'hornyjail', desc:' [user] {duration} {units of duration} Sends someone horny jail for some time'},
+    {name:'setfree' , desc:' [target] {user} Choose to free someone or everyone from horny jail' },
+    {name:'invite' , desc:'Sends you the link to invite me to other servers'},
+    {name: '8ball', desc: 'Ask a question, get a magic 8 ball answer'},
+    {name: 'cry', desc: ' Pokemon cry'},
+    {name: 'food add', desc: '[name] Add a place to eat to list of places'},
+    {name: 'food list', desc: 'Lists all the saved restaurants'},
+    {name: 'food choose', desc: 'Randomly chooses a restaurant to eat at'}
 ]
 
 function helpList(){

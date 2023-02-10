@@ -4,7 +4,8 @@ const usuals = [
     "Burger Point",
     "Popeyes",
     "Nandos",
-    "Bonchon"
+    "Bonchon",
+    "Babas"
   ];
 
 places = new Set();
@@ -12,7 +13,6 @@ places = new Set();
 for(const u of usuals){
     places.add(u);
 }
-console.log(places);
 
 module.exports = {
     data: new SlashCommandBuilder()
