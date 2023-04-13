@@ -4,15 +4,11 @@ The purpose for this bot is to be used within some personal discord servers. It 
 
 ## Commands implemented
 
-SomeRandomBot uses the prefix "!"
+SomeRandomBot uses slash commands
 
 ### invite
 
 An embedded link of the bot invite will pop up
-
-### ping
-
-pong!
 
 ### help
 

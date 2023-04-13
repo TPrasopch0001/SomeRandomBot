@@ -8,7 +8,7 @@ const usuals = [
     "Babas"
   ];
 
-places = new Set();
+let places = new Set();
 
 for(const u of usuals){
     places.add(u);
