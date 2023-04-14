@@ -72,7 +72,7 @@ module.exports = {
 
         let setTime = 0;
         if(target.id !== bot.id){
-            if(senderRoles.find( r => r.rawPosition >= 4)){
+            if(senderRoles.find( r => r.name === "role admin")){
                 if(!cooldowns.has(sender.id)){
                     if(!target.roles.cache.find( r => r.name === roleName)){
                         target.roles.add(role);
